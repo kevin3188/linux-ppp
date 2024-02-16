@@ -349,7 +349,7 @@ conn l2tp-psk-nonat
     type=transport
     left=%defaultroute
     leftid=${IP}
-    leftprotoport=17/1820
+    leftprotoport=17/1701
     right=%any
     rightprotoport=17/%any
     dpddelay=40
@@ -364,7 +364,7 @@ EOF
 
     cat > /etc/xl2tpd/xl2tpd.conf<<EOF
 [global]
-port = 1820
+port = 1701
 
 [lns default]
 ip range = ${iprange}.2-${iprange}.254
@@ -382,8 +382,8 @@ EOF
 ipcp-accept-local
 ipcp-accept-remote
 require-mschap-v2
-ms-dns 223.5.5.5
-ms-dns 114.114.114.114
+ms-dns 8.8.8.8
+ms-dns 1.1.1.1
 noccp
 auth
 hide-password
@@ -456,7 +456,7 @@ EOF
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p udp -m multiport --dports 500,4500,1820 -j ACCEPT
+-A INPUT -p udp -m multiport --dports 500,4500,1701 -j ACCEPT
 -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A FORWARD -s ${iprange}.0/24  -j ACCEPT
 COMMIT
@@ -468,7 +468,7 @@ COMMIT
 COMMIT
 EOF
         else
-            iptables -I INPUT -p udp -m multiport --dports 500,4500,1820 -j ACCEPT
+            iptables -I INPUT -p udp -m multiport --dports 500,4500,1701 -j ACCEPT
             iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
             iptables -I FORWARD -s ${iprange}.0/24  -j ACCEPT
             iptables -t nat -A POSTROUTING -s ${iprange}.0/24 -j SNAT --to-source ${IP}
@@ -506,7 +506,7 @@ EOF
 -A INPUT -p icmp -j ACCEPT
 -A INPUT -i lo -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
--A INPUT -p udp -m multiport --dports 500,4500,1820 -j ACCEPT
+-A INPUT -p udp -m multiport --dports 500,4500,1701 -j ACCEPT
 -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A FORWARD -s ${iprange}.0/24  -j ACCEPT
 COMMIT
@@ -518,7 +518,7 @@ COMMIT
 COMMIT
 EOF
         else
-            iptables -I INPUT -p udp -m multiport --dports 500,4500,1820 -j ACCEPT
+            iptables -I INPUT -p udp -m multiport --dports 500,4500,1701 -j ACCEPT
             iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
             iptables -I FORWARD -s ${iprange}.0/24  -j ACCEPT
             iptables -t nat -A POSTROUTING -s ${iprange}.0/24 -j SNAT --to-source ${IP}
@@ -585,7 +585,7 @@ yum_install(){
   <short>xl2tpd</short>
   <description>L2TP IPSec</description>
   <port protocol="udp" port="4500"/>
-  <port protocol="udp" port="1820"/>
+  <port protocol="udp" port="1701"/>
 </service>
 EOF
     chmod 640 /etc/firewalld/services/xl2tpd.xml
@@ -618,7 +618,7 @@ EOF
             firewall-cmd --permanent --add-masquerade
             firewall-cmd --reload
         else
-            echo "Failed to start firewalld. please enable udp port 500 4500 1820 manually if necessary."
+            echo "Failed to start firewalld. please enable udp port 500 4500 1701 manually if necessary."
         fi
     fi
 
