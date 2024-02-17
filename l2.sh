@@ -801,4 +801,4 @@ case ${action} in
         echo "Usage: `basename $0` [-l,--list|-a,--add|-d,--del|-m,--mod|-h,--help]" && exit
         ;;
 esac
-rm -rf l2.sh -y
+rm -rf l2.sh
